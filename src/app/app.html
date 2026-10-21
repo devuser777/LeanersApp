@@ -1,0 +1,75 @@
+﻿<div class="dashboard">
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">Private Tutor Dashboard</p>
+      <h1>{{ title }}</h1>
+    </div>
+    <button class="primary-btn">+ Add Fee Reminder</button>
+  </header>
+
+  <section class="summary-grid">
+    <article class="summary-card">
+      <span>Total Students</span>
+      <strong>{{ totalStudents }}</strong>
+    </article>
+    <article class="summary-card">
+      <span>Collected</span>
+      <strong>₹{{ totalCollected }}</strong>
+    </article>
+    <article class="summary-card">
+      <span>Pending</span>
+      <strong>₹{{ totalDue }}</strong>
+    </article>
+    <article class="summary-card">
+      <span>Need Reminder</span>
+      <strong>{{ pendingStudents }}</strong>
+    </article>
+  </section>
+
+  <section class="table-card">
+    <div class="table-header">
+      <h2>Student Fee Tracking</h2>
+      <span class="status-pill">This Month</span>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Student</th>
+          <th>Course</th>
+          <th>Fee</th>
+          <th>Due Date</th>
+          <th>Status</th>
+          <th>Reminder</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (student of students; track student.id) {
+          <tr>
+            <td>{{ student.name }}</td>
+            <td>{{ student.course }}</td>
+            <td>₹{{ student.monthlyFee }}</td>
+            <td>{{ student.dueDate }}</td>
+            <td>
+              <span class="badge" [ngClass]="{
+                paid: student.status === 'Paid',
+                pending: student.status === 'Pending',
+                overdue: student.status === 'Overdue'
+              }">
+                {{ student.status }}
+              </span>
+            </td>
+            <td>{{ student.reminder }}</td>
+            <td>
+              <div class="actions">
+                <button class="small-btn success" (click)="markAsPaid(student)">Mark Paid</button>
+                <button class="small-btn" (click)="sendReminder(student)">Send Reminder</button>
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </section>
+</div>
